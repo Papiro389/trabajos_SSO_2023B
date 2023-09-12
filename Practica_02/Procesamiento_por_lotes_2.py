@@ -48,4 +48,7 @@ ruta_carpeta_destino = "C:/Users/seren/Desktop/Practica_02/Sistemas_Copia"  # Ca
 for raiz, direcciones, archivos in os.walk(ruta_carpeta_origen):
     for archivo in archivos:
         ruta_archivo = os.path.join(raiz, archivo)
+        
+        # Procesar archivo si es de texto txt
+        #imprime la ruta de los archivos
         proceso(ruta_archivo, ruta_carpeta_origen, ruta_carpeta_destino)
