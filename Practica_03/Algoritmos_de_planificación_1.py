@@ -69,7 +69,7 @@ def mostrar_menu():
     print("1. SJF (Shortest Job First)")
     print("2. FIFO (First-In, First-Out)")
     print("3. Prioridades")
-    print("4. Round Robin")
+    print("4. RR (Round Robin)")
     print("5. Salir")
 
     eleccion = input("Ingresa el número de tu elección: ")
@@ -92,7 +92,7 @@ def ejecutar_programa(procesos):
             print("Corriendo algoritmo Round Robin:")
             round_robin(procesos)
         elif eleccion == "5":
-            print("Saliendo del programa.")
+            print("Saliendo del programa c:")
             break
         else:
             print("Opción no válida. Por favor, selecciona una opción válida del menú.")
