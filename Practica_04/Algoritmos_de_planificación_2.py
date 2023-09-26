@@ -121,14 +121,13 @@ def prioridad(procesos):
         procesos.pop(0)
     print(f"Todos los procesos han terminado en {tiempo_transcurrido} segundos")
 
-
+#para agregar procesos
 def menu(procesos):
     procesos = leer_archivo(nombre_archivo)
     os.system('cls')
     print("Bienvenido al menu, selecciona una opcion:")
     print("1. Agregar proceso")
-    print("2. Algoritmos de planificacion")
-    print("3. Salir")
+    print("2. Regresar al menú")
 
     opcion = input("Ingrese una opción: ")
     print("\n")
@@ -138,10 +137,8 @@ def menu(procesos):
        
     elif opcion == "2":
         menu_algoritmos(procesos)
-    elif opcion == "3":
-        quit()
     else:
-        print("Opción inválida. Intente de nuevo.")
+        print("Opción inválida.")
 
     print("\n")
     input("Presione ENTER para continuar...")
@@ -153,12 +150,13 @@ def menu(procesos):
 def menu_algoritmos(procesos):
     procesos = leer_archivo(nombre_archivo)
     os.system('cls')
-    print("Seleccione un algoritmo a ejecutar:")
-    print("1. SJF")
-    print("2. FIFO")
+    print("Selecciona un algoritmo de planificación de procesos:")
+    print("1. SJF (Shortest Job First)")
+    print("2. FIFO (First-In, First-Out)")
     print("3. Prioridades")
     print("4. Round Robin")
-    print("5. Salir")
+    print("5. agregar procesos")
+    print("6. Salir")
 
     opcion = input("Ingrese una opción: ")
     print("\n")
@@ -173,6 +171,8 @@ def menu_algoritmos(procesos):
         round_robin(procesos)
     elif opcion == "5":
         menu(procesos)
+    elif opcion == "6":
+        quit()
     else:
         print("Opción inválida. Intente de nuevo.")
 
@@ -182,4 +182,4 @@ def menu_algoritmos(procesos):
     os.system('cls')
     menu_algoritmos(procesos)
 
-menu(procesos)
+menu_algoritmos(procesos)
