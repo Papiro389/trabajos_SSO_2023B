@@ -1,0 +1,5 @@
+Ingrese el nombre del proceso: Proceso1
+Ingrese el tiempo de duración del proceso: 5
+Ingrese la prioridad del proceso: 3
+Ingrese la posición del proceso (al principio o al final): al final
+Proceso Proceso1 agregado con éxito
