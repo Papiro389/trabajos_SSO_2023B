@@ -156,10 +156,13 @@ estado_Memoria_original = ['disponible'] * len(espacio_Memoria_original)
 
 espacio_Memoria1 = espacio_Memoria_original.copy()
 estado_Memoria1 = estado_Memoria_original.copy()
+
 espacio_Memoria2 = espacio_Memoria_original.copy()
 estado_Memoria2 = estado_Memoria_original.copy()
+
 espacio_Memoria3 = espacio_Memoria_original.copy()
 estado_Memoria3 = estado_Memoria_original.copy()
+
 espacio_Memoria4 = espacio_Memoria_original.copy()
 estado_Memoria4 = estado_Memoria_original.copy()
 
@@ -171,6 +174,7 @@ while True:
     print("2. Primer Ajuste")
     print("3. Peor Ajuste")
     print("4. Siguiente Ajuste")
+    print("-----------------------")
     print("5. Agregar Espacio de Memoria")
     print("6. Ver Espacios de Memoria")
     print("7. Agregar nuevos archivos")
