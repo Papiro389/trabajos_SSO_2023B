@@ -1,61 +1,66 @@
+import tkinter as tk
 import threading
 import time
-import random
+from threading import Semaphore
 
 class Archivo:
-
     def __init__(self):
-        self.valor = 0
-        self.archivo = open("archivo.txt", "r+")
-        self.lock_escritor = threading.Lock()
-        self.sem_lector = threading.Semaphore(2) # Dos lectores permitidos al mismo tiempo
-        self.escritor_activo = False
+        self.archivo = open('archivo.txt', 'w+')
+        self.semaforo = Semaphore(1)
 
-    def escribir(self, id_escritor):
-        while True:
-            tiempo_espera = random.choice([0.5, 1, 2])
-            print(f"Escritor {id_escritor} inició con una frecuencia de {tiempo_espera} segundos")
-            time.sleep(tiempo_espera)
+    def leer(self):
+        self.semaforo.acquire()
+        self.archivo.seek(0)
+        contenido = self.archivo.read()
+        time.sleep(0.1)  # Simular delay de lectura
+        self.semaforo.release()
+        return contenido
 
-            self.lock_escritor.acquire() # Bloquear el acceso al archivo para otros escritores
-            self.escritor_activo = True
-            self.archivo.write(f"{self.valor}\n")
-            self.valor += 1
-            self.archivo.flush() # Forzar la escritura en disco
-            print(f"Escritor {id_escritor} escribió en el archivo")
-            self.escritor_activo = False
-            self.lock_escritor.release() # Desbloquear el acceso al archivo para otros escritores
+    def editar(self, texto):
+        self.semaforo.acquire()
+        self.archivo.write(texto)
+        self.semaforo.release()
 
-    def leer(self, id_lector):
-        while True:
-            tiempo_espera = random.choice([1, 1.5, 2])
-            print(f"Lector {id_lector} inició con una frecuencia de {tiempo_espera} segundos")
-            time.sleep(tiempo_espera)
+    def guardar(self):
+        self.archivo.close()
+        self.archivo = open('archivo.txt', 'w+')
 
-            self.sem_lector.acquire() # Bloquear el acceso al archivo para otros lectores
-            while self.escritor_activo:  # Esperar hasta que el escritor termine
-                time.sleep(0.1)
+class Interfaz:
+    def __init__(self, root, archivo):
+        self.root = root
+        self.archivo = archivo
+        self.textbox = tk.Text(self.root, height=10, width=30)  # Especificar dimensiones
+        self.textbox.pack()
+        self.boton_leer = tk.Button(self.root, text='Leer', command=self.leer)
+        self.boton_leer.pack()
+        self.boton_editar = tk.Button(self.root, text='Editar', command=self.editar)
+        self.boton_editar.pack()
+        self.boton_guardar = tk.Button(self.root, text='Guardar', command=self.guardar)
+        self.boton_guardar.pack()
 
-            self.archivo.seek(0) # Mover el puntero al inicio del archivo
-            contenido = self.archivo.read()
-            print(f"Lector {id_lector} leyó: {contenido}")
-            self.sem_lector.release() # Desbloquear el acceso al archivo para otros lectores
+    def leer(self):
+        contenido = self.archivo.leer()
+        self.textbox.delete('1.0', 'end')
+        self.textbox.insert('end', contenido)
 
-if __name__ == "__main__":
-    archivo = Archivo()
-    hilos = []
-    
-    for i in range(2):
-        hilo_lector = threading.Thread(target=archivo.leer, args=(i,))
-        hilo_lector.start()
-        hilos.append(hilo_lector)
+    def editar(self):
+        texto = self.textbox.get('1.0', 'end')
+        self.archivo.editar(texto)
 
-    for i in range(2):
-        hilo_escritor = threading.Thread(target=archivo.escribir, args=(i,))
-        hilo_escritor.start()
-        hilos.append(hilo_escritor)
+    def guardar(self):
+        texto = self.textbox.get('1.0', 'end')
+        self.archivo.editar(texto)
+        self.archivo.guardar()
 
-    for hilo in hilos:
-        hilo.join()
+archivo = Archivo()
 
-    archivo.archivo.close() # Cerrar el archivo al finalizar
+root1 = tk.Tk()
+interfaz1 = Interfaz(root1, archivo)
+
+root2 = tk.Tk()
+interfaz2 = Interfaz(root2, archivo)
+
+root3 = tk.Tk()
+interfaz3 = Interfaz(root3, archivo)
+
+tk.mainloop()
